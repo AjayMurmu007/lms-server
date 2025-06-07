@@ -17,7 +17,7 @@ export const clerkWekhooks = async (req, res) => {
             case 'user.created': {
                 const userData = {
                     _id: data.id,
-                    email: data.email.addresses[0].email_addresses,
+                    email: data.email.addresses[0].email_address,
                     name: data.first_name + '' + data.last_name,
                     imageUrl: data.image_url,
                 }
@@ -29,7 +29,7 @@ export const clerkWekhooks = async (req, res) => {
             case 'user.updated': {
                 const userData = {
                     _id: data.id,
-                    email: data.email.addresses[0].email_address,
+                    email: data.email.address[0].email_address,
                     name: data.first_name + '' + data.last_name,
                     imageUrl: data.image_url,
                 }
