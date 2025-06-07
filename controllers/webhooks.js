@@ -1,10 +1,10 @@
 import { Webhook } from "svix";
-import User from "../models/User";
+import User from "../models/User.js";
 
 // API controller function to manage clerk user with database
 export const clerkWekhooks = async (req, res) => {
     try {
-        const webhook = new webhook(process.env.CLERK_WEBHOOK_SECRET)
+        const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
         await webhook.verify(JSON.stringify(req.body), {
             "svix-id": req.headers['svix-id'],
             'svix-timestamp': req.headers['svix-timestamp'],
@@ -17,7 +17,7 @@ export const clerkWekhooks = async (req, res) => {
             case 'user.created': {
                 const userData = {
                     _id: data.id,
-                    email: data.email.addresses[0].email_address,
+                    email: data.email.addresses[0].email_addresses,
                     name: data.first_name + '' + data.last_name,
                     imageUrl: data.image_url,
                 }
@@ -29,7 +29,7 @@ export const clerkWekhooks = async (req, res) => {
             case 'user.updated': {
                 const userData = {
                     _id: data.id,
-                    email: data.email.addresses[0].email_address,
+                    email: data.email.address[0].email_address,
                     name: data.first_name + '' + data.last_name,
                     imageUrl: data.image_url,
                 }
@@ -49,5 +49,7 @@ export const clerkWekhooks = async (req, res) => {
         }
     } catch (error) {
         res.json({success: false, message:error.message})
+        console.log(error);
+        
     }
 }
